@@ -1,0 +1,31 @@
+// Variables and mixins are imported globally
+
+// Work experience and education styles
+.workeduc-box {
+  border-left: $border;
+  margin-top: 2rem;
+
+  .workeduc-content {
+    @include timeline-item;
+
+    .year {
+      color: $main-color;
+      font-size: 1.2rem;
+
+      i {
+        margin-right: 0.4rem;
+        font-size: 1.2rem;
+      }
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      margin: 0.3rem 0;
+    }
+
+    p {
+      font-size: 1.15rem;
+      text-align: justify;
+    }
+  }
+}
