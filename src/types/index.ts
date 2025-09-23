@@ -74,6 +74,7 @@ export interface PageState {
 export interface BookPageProps {
   pageId: string;
   pageNumber: number;
+  zIndex: number;
   onPageTurn: (pageId: string) => void;
   isTurned: boolean;
   children: React.ReactNode;
@@ -81,7 +82,7 @@ export interface BookPageProps {
 }
 
 export interface NavigationButtonProps {
-  direction: 'next' | 'prev';
+  direction: "next" | "prev";
   pageId: string;
   onPageTurn: (pageId: string) => void;
 }
@@ -117,4 +118,11 @@ export interface ContactPageProps {
   onSubmit: (formData: ContactForm) => void;
   onBackToProfile: () => void;
   pageNumber: number;
+}
+
+export interface pageInfoItem {
+  id: number;
+  isTurned: boolean;
+  pageNumber: number;
+  zIndex: number;
 }

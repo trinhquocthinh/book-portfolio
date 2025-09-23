@@ -1,26 +1,34 @@
 import React, { useState, useEffect, useCallback } from "react";
-import type { PageState } from "../types";
+import type { ContactForm, PageState } from "../types";
 import { LoadingWrapper } from "./Loading";
 import BookCover from "./BookCover";
 import BookPage from "./BookPage";
 import ProfilePage from "./ProfilePage";
 import WorkEducationPage from "./WorkEducationPage";
-// import ServicesPage from "./ServicesPage";
-// import SkillsPage from "./SkillsPage";
-// import PortfolioPage from "./PortfolioPage";
-// import ContactPage from "./ContactPage";
+import ServicesPage from "./ServicesPage";
+import SkillsPage from "./SkillsPage";
+import PortfolioPage from "./PortfolioPage";
+import ContactPage from "./ContactPage";
 import { portfolioData } from "../data/portfolioData";
+
 
 const BookPortfolio: React.FC = () => {
   const [pageState, setPageState] = useState<PageState>({
     currentPage: 0,
     isTurning: false,
-    turnedPages: new Set(),
+    turnedPages: new Set([1, 2, 3]), // Start with all pages turned like vanilla HTML
   });
 
   const [isOpening, setIsOpening] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [indexCover, setIndexCover] = useState(1);
+  const [pageZIndexes, setPageZIndexes] = useState<{ [key: number]: number }>({
+    1: 3, // Higher z-index for stacked pages (turned state)
+    2: 2,
+    3: 1
+  });
+
+
 
   const handlePageTurn = useCallback(
     (pageId: string) => {
@@ -29,12 +37,32 @@ const BookPortfolio: React.FC = () => {
       setPageState((prev) => ({ ...prev, isTurning: true }));
 
       const pageNumber = parseInt(pageId.split("-")[1]) || 0;
+      const buttonIndex = pageNumber - 1; // Convert to 0-based index for vanilla JS logic
+      
       const newTurnedPages = new Set(pageState.turnedPages);
 
       if (newTurnedPages.has(pageNumber)) {
+        // Remove turn - page going back (matches vanilla JS removeClass('turn'))
         newTurnedPages.delete(pageNumber);
+        
+        // Update z-index after animation delay (matches vanilla JS exactly: 2 - index)
+        setTimeout(() => {
+          setPageZIndexes((prev) => ({
+            ...prev,
+            [pageNumber]: 2 - buttonIndex
+          }));
+        }, 500);
       } else {
+        // Add turn - page going forward (matches vanilla JS addClass('turn'))
         newTurnedPages.add(pageNumber);
+        
+        // Update z-index after animation delay (matches vanilla JS exactly: 2 + index)
+        setTimeout(() => {
+          setPageZIndexes((prev) => ({
+            ...prev,
+            [pageNumber]: 2 + buttonIndex
+          }));
+        }, 500);
       }
 
       setPageState((prev) => ({
@@ -66,60 +94,113 @@ const BookPortfolio: React.FC = () => {
 
     const openingTimer = setTimeout(() => {
       setIsOpening(false);
-      handlePageTurn("cover-right");
     }, 2100);
+
+    // Opening animation: gradually remove turn from pages to show them
+    // But keep them in a navigable state
+    setTimeout(() => {
+      // Remove turn from page 3 first (last page -> first to show)
+      setPageState((prev) => {
+        const newTurnedPages = new Set(prev.turnedPages);
+        newTurnedPages.delete(3);
+        return { ...prev, turnedPages: newTurnedPages };
+      });
+      
+      setTimeout(() => {
+        setPageZIndexes((prev) => ({
+          ...prev,
+          3: 1
+        }));
+      }, 500);
+    }, 2300);
+
+    setTimeout(() => {
+      // Remove turn from page 2
+      setPageState((prev) => {
+        const newTurnedPages = new Set(prev.turnedPages);
+        newTurnedPages.delete(2);
+        return { ...prev, turnedPages: newTurnedPages };
+      });
+      
+      setTimeout(() => {
+        setPageZIndexes((prev) => ({
+          ...prev,
+          2: 1
+        }));
+      }, 500);
+    }, 2500);
+
+    setTimeout(() => {
+      // Remove turn from page 1 (first page -> last to show, on top)
+      setPageState((prev) => {
+        const newTurnedPages = new Set(prev.turnedPages);
+        newTurnedPages.delete(1);
+        return { ...prev, turnedPages: newTurnedPages };
+      });
+      
+      setTimeout(() => {
+        setPageZIndexes((prev) => ({
+          ...prev,
+          1: 2 // Page 1 should be on top for navigation
+        }));
+      }, 500);
+    }, 2700);
 
     return () => {
       clearTimeout(loadingTimer);
       clearTimeout(openingTimer);
     };
-  }, [handlePageTurn]);
+  }, []);
 
   const handleContactMe = () => {
     // Turn all pages to reach contact page
-    const pageIds = [1, 2, 3];
-    pageIds.forEach((pageId, index) => {
-      setTimeout(
-        () => {
-          setPageState((prev) => ({
+    const pages = [1, 2, 3];
+    
+    pages.forEach((pageNumber, index) => {
+      setTimeout(() => {
+        setPageState((prev) => ({
+          ...prev,
+          turnedPages: new Set([...prev.turnedPages, pageNumber]),
+        }));
+        
+        // Update z-index with delay
+        setTimeout(() => {
+          setPageZIndexes((prev) => ({
             ...prev,
-            turnedPages: new Set(prev.turnedPages).add(pageId),
+            [pageNumber]: 20 + index
           }));
-        },
-        (index + 1) * 200 + 100
-      );
+        }, 500);
+      }, (index + 1) * 200 + 100);
     });
   };
 
-  // const handleBackToProfile = () => {
-  //   // Turn back all pages
-  //   const pageIds = [3, 2, 1];
-  //   let pageNumber = 3;
+  const handleBackToProfile = () => {
+    // Turn back all pages
+    const pages = [3, 2, 1]; // Reverse order
+    
+    pages.forEach((pageNumber, index) => {
+      setTimeout(() => {
+        setPageState((prev) => {
+          const newTurnedPages = new Set(prev.turnedPages);
+          newTurnedPages.delete(pageNumber);
+          return { ...prev, turnedPages: newTurnedPages };
+        });
 
-  //   const reverseIndex = () => {
-  //     pageNumber--;
-  //     if (pageNumber < 0) pageNumber = 2;
-  //   };
+        // Update z-index with delay
+        setTimeout(() => {
+          setPageZIndexes((prev) => ({
+            ...prev,
+            [pageNumber]: 2 - (pageNumber - 1)
+          }));
+        }, 500);
+      }, (index + 1) * 200 + 100);
+    });
+  };
 
-  //   pageIds.forEach((_, index) => {
-  //     setTimeout(
-  //       () => {
-  //         reverseIndex();
-  //         setPageState((prev) => {
-  //           const newTurnedPages = new Set(prev.turnedPages);
-  //           newTurnedPages.delete(pageNumber);
-  //           return { ...prev, turnedPages: newTurnedPages };
-  //         });
-  //       },
-  //       (index + 1) * 200 + 100
-  //     );
-  //   });
-  // };
-
-  // const handleContactSubmit = (formData: ContactForm) => {
-  //   console.log("Form submitted:", formData);
-  //   // Handle form submission logic here
-  // };
+  const handleContactSubmit = (formData: ContactForm) => {
+    console.log("Form submitted:", formData);
+    // Handle form submission logic here
+  };
 
   return (
     <LoadingWrapper isLoading={isLoading} loadingText="Preparing your portfolio book...">
@@ -138,7 +219,7 @@ const BookPortfolio: React.FC = () => {
           </div>
 
           {/* Page 1 & 2 (Work Experience & Education) */}
-          <BookPage pageId="turn-1" pageNumber={1} onPageTurn={handlePageTurn} isTurned={pageState.turnedPages.has(1)}>
+          <BookPage zIndex={pageZIndexes[1]} pageId="turn-1" pageNumber={1} onPageTurn={handlePageTurn} isTurned={pageState.turnedPages.has(1)}>
             <div className="page-front">
               <WorkEducationPage items={portfolioData.workExperience} title="Work Experience" pageNumber={1} />
             </div>
@@ -148,47 +229,24 @@ const BookPortfolio: React.FC = () => {
           </BookPage>
 
           {/* Page 3 & 4 (Services & Skills) */}
-          {/* <BookPage
-          pageId="turn-2"
-          pageNumber={2}
-          onPageTurn={handlePageTurn}
-          isTurned={pageState.turnedPages.has(2)}
-        >
-          <div className="page-front">
-            <ServicesPage
-              services={portfolioData.services}
-              pageNumber={3}
-            />
-          </div>
-          <div className="page-back">
-            <SkillsPage
-              skillCategories={portfolioData.skills}
-              pageNumber={4}
-            />
-          </div>
-        </BookPage> */}
+          <BookPage zIndex={pageZIndexes[2]} pageId="turn-2" pageNumber={2} onPageTurn={handlePageTurn} isTurned={pageState.turnedPages.has(2)}>
+            <div className="page-front">
+              <ServicesPage services={portfolioData.services} pageNumber={3} />
+            </div>
+            <div className="page-back">
+              <SkillsPage skillCategories={portfolioData.skills} pageNumber={4} />
+            </div>
+          </BookPage>
 
           {/* Page 5 & 6 (Portfolio & Contact) */}
-          {/* <BookPage
-          pageId="turn-3"
-          pageNumber={3}
-          onPageTurn={handlePageTurn}
-          isTurned={pageState.turnedPages.has(3)}
-        >
-          <div className="page-front">
-            <PortfolioPage
-              project={portfolioData.latestProject}
-              pageNumber={5}
-            />
-          </div>
-          <div className="page-back">
-            <ContactPage
-              onSubmit={handleContactSubmit}
-              onBackToProfile={handleBackToProfile}
-              pageNumber={6}
-            />
-          </div>
-        </BookPage> */}
+          <BookPage zIndex={pageZIndexes[3]}  pageId="turn-3" pageNumber={3} onPageTurn={handlePageTurn} isTurned={pageState.turnedPages.has(3)}>
+            <div className="page-front">
+              <PortfolioPage project={portfolioData.latestProject} pageNumber={5} />
+            </div>
+            <div className="page-back">
+              <ContactPage onSubmit={handleContactSubmit} onBackToProfile={handleBackToProfile} pageNumber={6} />
+            </div>
+          </BookPage>
         </div>
       </div>
     </LoadingWrapper>
