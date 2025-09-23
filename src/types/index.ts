@@ -75,7 +75,6 @@ export interface BookPageProps {
   pageId: string;
   pageNumber: number;
   zIndex: number;
-  onPageTurn: (pageId: string) => void;
   isTurned: boolean;
   children: React.ReactNode;
   className?: string;
@@ -97,21 +96,29 @@ export interface WorkEducationPageProps {
   items: WorkExperienceItem[] | EducationItem[];
   title: string;
   pageNumber: number;
+  pageId: string;
+  onPageTurn: (pageId: string) => void;
 }
 
 export interface ServicesPageProps {
   services: ServiceItem[];
   pageNumber: number;
+  pageId: string;
+  onPageTurn: (pageId: string) => void;
 }
 
 export interface SkillsPageProps {
   skillCategories: SkillCategory[];
   pageNumber: number;
+  pageId: string;
+  onPageTurn: (pageId: string) => void;
 }
 
 export interface PortfolioPageProps {
   project: Project;
   pageNumber: number;
+  pageId: string;
+  onPageTurn: (pageId: string) => void;
 }
 
 export interface ContactPageProps {

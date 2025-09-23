@@ -1,7 +1,8 @@
-import React from 'react';
-import type { SkillsPageProps } from '../types';
+import React from "react";
+import type { SkillsPageProps } from "../types";
+import NavigationButton from "./NavigationButton";
 
-const SkillsPage: React.FC<SkillsPageProps> = ({ skillCategories, pageNumber }) => {
+const SkillsPage: React.FC<SkillsPageProps> = ({ skillCategories, pageNumber, pageId, onPageTurn }) => {
   return (
     <>
       <h1 className="title">My Skills</h1>
@@ -23,6 +24,7 @@ const SkillsPage: React.FC<SkillsPageProps> = ({ skillCategories, pageNumber }) 
       </div>
 
       <span className="number-page">{pageNumber}</span>
+      <NavigationButton direction="prev" pageId={pageId} onPageTurn={onPageTurn} />
     </>
   );
 };

@@ -1,7 +1,8 @@
-import React from 'react';
-import type { ServicesPageProps } from '../types';
+import React from "react";
+import type { ServicesPageProps } from "../types";
+import NavigationButton from "./NavigationButton";
 
-const ServicesPage: React.FC<ServicesPageProps> = ({ services, pageNumber }) => {
+const ServicesPage: React.FC<ServicesPageProps> = ({ services, pageNumber, pageId, onPageTurn }) => {
   return (
     <>
       <h1 className="title">My Services</h1>
@@ -12,12 +13,16 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ services, pageNumber }) => 
             <i className={service.icon}></i>
             <h3>{service.title}</h3>
             <p>{service.description}</p>
-            <a href="#" className="btn">Read More</a>
+            <a href="#" className="btn">
+              Read More
+            </a>
           </div>
         ))}
       </div>
 
       <span className="number-page">{pageNumber}</span>
+
+      <NavigationButton direction="next" pageId={pageId} onPageTurn={onPageTurn} />
     </>
   );
 };

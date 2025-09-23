@@ -1,11 +1,8 @@
-import React from 'react';
-import type { WorkEducationPageProps } from '../types';
+import React from "react";
+import type { WorkEducationPageProps } from "../types";
+import NavigationButton from "./NavigationButton";
 
-const WorkEducationPage: React.FC<WorkEducationPageProps> = ({ 
-  items, 
-  title, 
-  pageNumber 
-}) => {
+const WorkEducationPage: React.FC<WorkEducationPageProps> = ({ pageId, items, title, onPageTurn, pageNumber }) => {
   return (
     <>
       <h1 className="title">{title}</h1>
@@ -18,16 +15,23 @@ const WorkEducationPage: React.FC<WorkEducationPageProps> = ({
               {item.period}
             </span>
             <h3>
-              {'position' in item ? item.position : item.degree}
-              {' - '}
-              {'company' in item ? item.company : item.institution}
+              {"position" in item ? item.position : item.degree}
+              {" - "}
+              {"company" in item ? item.company : item.institution}
             </h3>
             <p>{item.description}</p>
           </div>
         ))}
       </div>
-      
+
       <span className="number-page">{pageNumber}</span>
+
+      {/* Navigation buttons */}
+      {pageNumber > 1 ? (
+        <NavigationButton direction="prev" pageId={pageId} onPageTurn={onPageTurn} />
+      ) : (
+        <NavigationButton direction="next" pageId={pageId} onPageTurn={onPageTurn} />
+      )}
     </>
   );
 };

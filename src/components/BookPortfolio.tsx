@@ -11,7 +11,6 @@ import PortfolioPage from "./PortfolioPage";
 import ContactPage from "./ContactPage";
 import { portfolioData } from "../data/portfolioData";
 
-
 const BookPortfolio: React.FC = () => {
   const [pageState, setPageState] = useState<PageState>({
     currentPage: 0,
@@ -24,11 +23,9 @@ const BookPortfolio: React.FC = () => {
   const [indexCover, setIndexCover] = useState(1);
   const [pageZIndexes, setPageZIndexes] = useState<{ [key: number]: number }>({
     1: 1, // Correct z-index: turn-1 = 3
-    2: 2, // turn-2 = 2  
-    3: 3  // turn-3 = 1
+    2: 2, // turn-2 = 2
+    3: 3, // turn-3 = 1
   });
-
-
 
   const handlePageTurn = useCallback(
     (pageId: string) => {
@@ -42,23 +39,23 @@ const BookPortfolio: React.FC = () => {
       if (newTurnedPages.has(pageNumber)) {
         // Remove turn - page going back (matches vanilla JS removeClass('turn'))
         newTurnedPages.delete(pageNumber);
-        
+
         // Update z-index after animation delay: page returns to its original stacked position
         setTimeout(() => {
           setPageZIndexes((prev) => ({
             ...prev,
-            [pageNumber]: 4 - pageNumber // turn-1=3, turn-2=2, turn-3=1
+            [pageNumber]: 4 - pageNumber, // turn-1=3, turn-2=2, turn-3=1
           }));
         }, 500);
       } else {
         // Add turn - page going forward (matches vanilla JS addClass('turn'))
         newTurnedPages.add(pageNumber);
-        
+
         // Update z-index after animation delay: turned pages get higher z-index
         setTimeout(() => {
           setPageZIndexes((prev) => ({
             ...prev,
-            [pageNumber]: 10 + pageNumber // Ensure turned pages are on top
+            [pageNumber]: 10 + pageNumber, // Ensure turned pages are on top
           }));
         }, 500);
       }
@@ -103,11 +100,11 @@ const BookPortfolio: React.FC = () => {
         newTurnedPages.delete(3);
         return { ...prev, turnedPages: newTurnedPages };
       });
-      
+
       setTimeout(() => {
         setPageZIndexes((prev) => ({
           ...prev,
-          3: 1 // turn-3 = 1
+          3: 1, // turn-3 = 1
         }));
       }, 500);
     }, 2300);
@@ -119,11 +116,11 @@ const BookPortfolio: React.FC = () => {
         newTurnedPages.delete(2);
         return { ...prev, turnedPages: newTurnedPages };
       });
-      
+
       setTimeout(() => {
         setPageZIndexes((prev) => ({
           ...prev,
-          2: 2 // turn-2 = 2
+          2: 2, // turn-2 = 2
         }));
       }, 500);
     }, 2500);
@@ -135,11 +132,11 @@ const BookPortfolio: React.FC = () => {
         newTurnedPages.delete(1);
         return { ...prev, turnedPages: newTurnedPages };
       });
-      
+
       setTimeout(() => {
         setPageZIndexes((prev) => ({
           ...prev,
-          1: 3 // turn-1 = 3 (highest z-index)
+          1: 3, // turn-1 = 3 (highest z-index)
         }));
       }, 500);
     }, 2700);
@@ -153,45 +150,51 @@ const BookPortfolio: React.FC = () => {
   const handleContactMe = () => {
     // Turn all pages to reach contact page
     const pages = [1, 2, 3];
-    
+
     pages.forEach((pageNumber, index) => {
-      setTimeout(() => {
-        setPageState((prev) => ({
-          ...prev,
-          turnedPages: new Set([...prev.turnedPages, pageNumber]),
-        }));
-        
-        // Update z-index with delay
-        setTimeout(() => {
-          setPageZIndexes((prev) => ({
+      setTimeout(
+        () => {
+          setPageState((prev) => ({
             ...prev,
-            [pageNumber]: 20 + index
+            turnedPages: new Set([...prev.turnedPages, pageNumber]),
           }));
-        }, 500);
-      }, (index + 1) * 200 + 100);
+
+          // Update z-index with delay
+          setTimeout(() => {
+            setPageZIndexes((prev) => ({
+              ...prev,
+              [pageNumber]: 20 + index,
+            }));
+          }, 500);
+        },
+        (index + 1) * 200 + 100
+      );
     });
   };
 
   const handleBackToProfile = () => {
     // Turn back all pages
     const pages = [3, 2, 1]; // Reverse order
-    
-    pages.forEach((pageNumber, index) => {
-      setTimeout(() => {
-        setPageState((prev) => {
-          const newTurnedPages = new Set(prev.turnedPages);
-          newTurnedPages.delete(pageNumber);
-          return { ...prev, turnedPages: newTurnedPages };
-        });
 
-        // Update z-index with delay
-        setTimeout(() => {
-          setPageZIndexes((prev) => ({
-            ...prev,
-            [pageNumber]: 4 - pageNumber // turn-1=3, turn-2=2, turn-3=1
-          }));
-        }, 500);
-      }, (index + 1) * 200 + 100);
+    pages.forEach((pageNumber, index) => {
+      setTimeout(
+        () => {
+          setPageState((prev) => {
+            const newTurnedPages = new Set(prev.turnedPages);
+            newTurnedPages.delete(pageNumber);
+            return { ...prev, turnedPages: newTurnedPages };
+          });
+
+          // Update z-index with delay
+          setTimeout(() => {
+            setPageZIndexes((prev) => ({
+              ...prev,
+              [pageNumber]: 4 - pageNumber, // turn-1=3, turn-2=2, turn-3=1
+            }));
+          }, 500);
+        },
+        (index + 1) * 200 + 100
+      );
     });
   };
 
@@ -217,29 +220,56 @@ const BookPortfolio: React.FC = () => {
           </div>
 
           {/* Page 1 & 2 (Work Experience & Education) */}
-          <BookPage zIndex={pageZIndexes[1]} pageId="turn-1" pageNumber={1} onPageTurn={handlePageTurn} isTurned={pageState.turnedPages.has(1)}>
+          <BookPage zIndex={pageZIndexes[1]} pageId="turn-1" pageNumber={1} isTurned={pageState.turnedPages.has(1)}>
             <div className="page-front">
-              <WorkEducationPage items={portfolioData.workExperience} title="Work Experience" pageNumber={1} />
+              <WorkEducationPage
+                pageId="turn-1"
+                items={portfolioData.workExperience}
+                title="Work Experience"
+                pageNumber={1}
+                onPageTurn={handlePageTurn}
+              />
             </div>
             <div className="page-back">
-              <WorkEducationPage items={portfolioData.education} title="Education" pageNumber={2} />
+              <WorkEducationPage
+                pageId="turn-1"
+                items={portfolioData.education}
+                title="Education"
+                pageNumber={2}
+                onPageTurn={handlePageTurn}
+              />
             </div>
           </BookPage>
 
           {/* Page 3 & 4 (Services & Skills) */}
-          <BookPage zIndex={pageZIndexes[2]} pageId="turn-2" pageNumber={2} onPageTurn={handlePageTurn} isTurned={pageState.turnedPages.has(2)}>
+          <BookPage zIndex={pageZIndexes[2]} pageId="turn-2" pageNumber={2} isTurned={pageState.turnedPages.has(2)}>
             <div className="page-front">
-              <ServicesPage services={portfolioData.services} pageNumber={3} />
+              <ServicesPage
+                pageId="turn-2"
+                services={portfolioData.services}
+                pageNumber={3}
+                onPageTurn={handlePageTurn}
+              />
             </div>
             <div className="page-back">
-              <SkillsPage skillCategories={portfolioData.skills} pageNumber={4} />
+              <SkillsPage
+                pageId="turn-2"
+                skillCategories={portfolioData.skills}
+                pageNumber={4}
+                onPageTurn={handlePageTurn}
+              />
             </div>
           </BookPage>
 
           {/* Page 5 & 6 (Portfolio & Contact) */}
-          <BookPage zIndex={pageZIndexes[3]}  pageId="turn-3" pageNumber={3} onPageTurn={handlePageTurn} isTurned={pageState.turnedPages.has(3)}>
+          <BookPage zIndex={pageZIndexes[3]} pageId="turn-3" pageNumber={3} isTurned={pageState.turnedPages.has(3)}>
             <div className="page-front">
-              <PortfolioPage project={portfolioData.latestProject} pageNumber={5} />
+              <PortfolioPage
+                pageId="turn-3"
+                project={portfolioData.latestProject}
+                pageNumber={5}
+                onPageTurn={handlePageTurn}
+              />
             </div>
             <div className="page-back">
               <ContactPage onSubmit={handleContactSubmit} onBackToProfile={handleBackToProfile} pageNumber={6} />

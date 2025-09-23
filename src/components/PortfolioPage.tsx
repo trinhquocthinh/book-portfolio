@@ -1,7 +1,8 @@
-import React from 'react';
-import type { PortfolioPageProps } from '../types';
+import React from "react";
+import type { PortfolioPageProps } from "../types";
+import NavigationButton from "./NavigationButton";
 
-const PortfolioPage: React.FC<PortfolioPageProps> = ({ project, pageNumber }) => {
+const PortfolioPage: React.FC<PortfolioPageProps> = ({ project, pageNumber, pageId, onPageTurn }) => {
   return (
     <>
       <h1 className="title">Latest Project</h1>
@@ -24,16 +25,21 @@ const PortfolioPage: React.FC<PortfolioPageProps> = ({ project, pageNumber }) =>
           <p>{project.techUsed}</p>
           <p>{project.description}</p>
         </div>
-        
+
         <div className="btn-box">
           {project.sourceUrl && (
-            <a href={project.sourceUrl} className="btn">Source Code</a>
+            <a href={project.sourceUrl} className="btn">
+              Source Code
+            </a>
           )}
-          <a href="#" className="btn">More Projects</a>
+          <a href="#" className="btn">
+            More Projects
+          </a>
         </div>
       </div>
 
       <span className="number-page">{pageNumber}</span>
+      <NavigationButton direction="next" pageId={pageId} onPageTurn={onPageTurn} />
     </>
   );
 };
