@@ -23,9 +23,9 @@ const BookPortfolio: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [indexCover, setIndexCover] = useState(1);
   const [pageZIndexes, setPageZIndexes] = useState<{ [key: number]: number }>({
-    1: 3, // Higher z-index for stacked pages (turned state)
-    2: 2,
-    3: 1
+    1: 1, // Correct z-index: turn-1 = 3
+    2: 2, // turn-2 = 2  
+    3: 3  // turn-3 = 1
   });
 
 
@@ -37,30 +37,28 @@ const BookPortfolio: React.FC = () => {
       setPageState((prev) => ({ ...prev, isTurning: true }));
 
       const pageNumber = parseInt(pageId.split("-")[1]) || 0;
-      const buttonIndex = pageNumber - 1; // Convert to 0-based index for vanilla JS logic
-      
       const newTurnedPages = new Set(pageState.turnedPages);
 
       if (newTurnedPages.has(pageNumber)) {
         // Remove turn - page going back (matches vanilla JS removeClass('turn'))
         newTurnedPages.delete(pageNumber);
         
-        // Update z-index after animation delay (matches vanilla JS exactly: 2 - index)
+        // Update z-index after animation delay: page returns to its original stacked position
         setTimeout(() => {
           setPageZIndexes((prev) => ({
             ...prev,
-            [pageNumber]: 2 - buttonIndex
+            [pageNumber]: 4 - pageNumber // turn-1=3, turn-2=2, turn-3=1
           }));
         }, 500);
       } else {
         // Add turn - page going forward (matches vanilla JS addClass('turn'))
         newTurnedPages.add(pageNumber);
         
-        // Update z-index after animation delay (matches vanilla JS exactly: 2 + index)
+        // Update z-index after animation delay: turned pages get higher z-index
         setTimeout(() => {
           setPageZIndexes((prev) => ({
             ...prev,
-            [pageNumber]: 2 + buttonIndex
+            [pageNumber]: 10 + pageNumber // Ensure turned pages are on top
           }));
         }, 500);
       }
@@ -109,7 +107,7 @@ const BookPortfolio: React.FC = () => {
       setTimeout(() => {
         setPageZIndexes((prev) => ({
           ...prev,
-          3: 1
+          3: 1 // turn-3 = 1
         }));
       }, 500);
     }, 2300);
@@ -125,7 +123,7 @@ const BookPortfolio: React.FC = () => {
       setTimeout(() => {
         setPageZIndexes((prev) => ({
           ...prev,
-          2: 1
+          2: 2 // turn-2 = 2
         }));
       }, 500);
     }, 2500);
@@ -141,7 +139,7 @@ const BookPortfolio: React.FC = () => {
       setTimeout(() => {
         setPageZIndexes((prev) => ({
           ...prev,
-          1: 2 // Page 1 should be on top for navigation
+          1: 3 // turn-1 = 3 (highest z-index)
         }));
       }, 500);
     }, 2700);
@@ -190,7 +188,7 @@ const BookPortfolio: React.FC = () => {
         setTimeout(() => {
           setPageZIndexes((prev) => ({
             ...prev,
-            [pageNumber]: 2 - (pageNumber - 1)
+            [pageNumber]: 4 - pageNumber // turn-1=3, turn-2=2, turn-3=1
           }));
         }, 500);
       }, (index + 1) * 200 + 100);
