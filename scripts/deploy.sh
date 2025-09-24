@@ -36,16 +36,16 @@ print_status "Previous builds cleaned"
 
 # Install dependencies
 echo "📦 Installing dependencies..."
-npm install || print_error "Failed to install dependencies"
+yarn install || print_error "Failed to install dependencies"
 print_status "Dependencies installed"
 
 # Run TypeScript type checking
 echo "🔍 Running TypeScript type check..."
-npm run type-check 2>/dev/null || print_warning "Type check script not found, skipping..."
+yarn type-check 2>/dev/null || print_warning "Type check script not found, skipping..."
 
 # Build the project
 echo "🔨 Building the project..."
-npm run build || print_error "Build failed"
+yarn build || print_error "Build failed"
 print_status "Project built successfully"
 
 # Check if dist directory was created
@@ -76,5 +76,5 @@ read -p "🔍 Do you want to preview the build locally? (y/n): " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "🌟 Starting preview server..."
-    npm run preview
+    yarn preview
 fi

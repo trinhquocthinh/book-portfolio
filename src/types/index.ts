@@ -126,10 +126,3 @@ export interface ContactPageProps {
   onBackToProfile: () => void;
   pageNumber: number;
 }
-
-export interface pageInfoItem {
-  id: number;
-  isTurned: boolean;
-  pageNumber: number;
-  zIndex: number;
-}
