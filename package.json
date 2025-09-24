@@ -1,7 +1,7 @@
 {
   "name": "book-portfolio",
   "private": true,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "description": "A 3D interactive portfolio book built with React, TypeScript, and SCSS",
   "keywords": [
