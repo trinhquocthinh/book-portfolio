@@ -14,7 +14,7 @@ export const portfolioData = {
     title: "Web Developer",
     description:
       "Hi, I'm a web Developer. Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque commodi numquam dolor a deserunt incidunt esse molestias voluptatum porro ullam.",
-    profileImage: "./Logo.png",
+    profileImage: "/Logo.png",
   } as PersonalInfo,
 
   socialMedia: {
@@ -136,7 +136,7 @@ export const portfolioData = {
   latestProject: {
     id: "project1",
     title: "Project Name",
-    image: "./website 3.png",
+    image: "/website 3.png",
     techUsed: "React, TypeScript, SCSS",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, vel ipsum quis possimus quaerat voluptatem temporibus saepe veniam?",
