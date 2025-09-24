@@ -3,6 +3,25 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "description": "A 3D interactive portfolio book built with React, TypeScript, and SCSS",
+  "keywords": [
+    "portfolio",
+    "react",
+    "typescript",
+    "3d",
+    "animation",
+    "vite"
+  ],
+  "author": "trinhquocthinh",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trinhquocthinh/book-portfolio.git"
+  },
+  "homepage": "https://trinhquocthinh.github.io/book-portfolio/",
+  "bugs": {
+    "url": "https://github.com/trinhquocthinh/book-portfolio/issues"
+  },
   "packageManager": "yarn@1.22.19",
   "scripts": {
     "dev": "vite",
@@ -13,7 +32,10 @@
     "test": "yarn type-check && yarn lint",
     "pre-push": "yarn test && yarn build",
     "preview": "vite preview",
-    "prepare": "husky"
+    "prepare": "husky",
+    "release:patch": "npm version patch && git push && git push --tags",
+    "release:minor": "npm version minor && git push && git push --tags",
+    "release:major": "npm version major && git push && git push --tags"
   },
   "dependencies": {
     "react": "^19.1.1",

@@ -1,0 +1,64 @@
+name: Publish to GitHub Packages
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'yarn'
+        registry-url: 'https://npm.pkg.github.com'
+        scope: '@${{ github.repository_owner }}'
+        
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+      
+    - name: Run tests
+      run: yarn test
+      
+    - name: Build
+      run: yarn build
+      
+    - name: Configure package for GitHub Packages
+      run: |
+        # Update package.json for GitHub Packages
+        npm pkg set name="@${{ github.repository_owner }}/book-portfolio"
+        npm pkg set repository.type="git"
+        npm pkg set repository.url="https://github.com/${{ github.repository }}.git"
+        npm pkg set homepage="https://${{ github.repository_owner }}.github.io/book-portfolio/"
+        npm pkg set publishConfig.registry="https://npm.pkg.github.com"
+        npm pkg set private=false
+        
+    - name: Publish to GitHub Packages
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Create Package Summary
+      run: |
+        echo "## 📦 Package Published Successfully!" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Package:** @${{ github.repository_owner }}/book-portfolio" >> $GITHUB_STEP_SUMMARY
+        echo "**Version:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Registry:** GitHub Packages" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Installation:" >> $GITHUB_STEP_SUMMARY
+        echo '```bash' >> $GITHUB_STEP_SUMMARY
+        echo "npm install @${{ github.repository_owner }}/book-portfolio" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
