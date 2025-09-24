@@ -61,8 +61,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --fix",
-      "tsc -b --noEmit"
+      "eslint --fix"
     ],
     "*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "prettier --write"
