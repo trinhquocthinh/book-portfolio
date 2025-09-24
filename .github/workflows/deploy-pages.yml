@@ -39,6 +39,16 @@ jobs:
       run: yarn build
       env:
         NODE_ENV: production
+        
+    - name: Fix favicon and asset paths for GitHub Pages
+      run: |
+        # Fix favicon path
+        sed -i 's|href="./Logo.png"|href="/book-portfolio/Logo.png"|g' dist/index.html
+        # Verify the change was made
+        echo "Checking favicon path in built HTML:"
+        grep -n "favicon\|icon" dist/index.html || true
+        echo "Full HTML head section:"
+        head -20 dist/index.html
       
     - name: Setup Pages
       uses: actions/configure-pages@v4
