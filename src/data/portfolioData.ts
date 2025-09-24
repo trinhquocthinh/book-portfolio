@@ -136,7 +136,7 @@ export const portfolioData = {
   latestProject: {
     id: "project1",
     title: "Project Name",
-    image: "/website 3.png",
+    image: "../website 3.png",
     techUsed: "React, TypeScript, SCSS",
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, vel ipsum quis possimus quaerat voluptatem temporibus saepe veniam?",
