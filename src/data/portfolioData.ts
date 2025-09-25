@@ -27,27 +27,27 @@ export const portfolioData = {
   workExperience: [
     {
       id: "work1",
-      period: "2018 - 2020",
-      position: "Web Developer",
-      company: "Software Pro",
+      period: "Apr, 2023 - now",
+      position: "Senior Front-end Developer",
+      company: "Idealife",
       description:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae minus eius nemo. Optio cupiditate nostrum commodi repellendus nemo quod in?",
+        "Built core features for Izion24 App and Agent App. Developed and optimized five business portals (ReactJS, Angular, WordPress). Conducted code audits and peer reviews. Proposed and delivered frontend optimizations, boosting overall performance and user satisfaction",
     },
     {
       id: "work2",
-      period: "2021 - 2022",
-      position: "Web Designer",
-      company: "Software Pro",
+      period: "Feb, 2022 - Jan, 2023",
+      position: "Senior Front-end Developer",
+      company: "Tiki",
       description:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae minus eius nemo. Optio cupiditate nostrum commodi repellendus nemo quod in?",
+        "Developed and optimized Tiki web features, improving performance and user experience. Provided technical advice to product owners and supported smooth CI/CD processes.",
     },
     {
       id: "work3",
-      period: "2022 - 2023",
-      position: "Graphic Designer",
-      company: "Software Pro",
+      period: "Apr, 2021 - Feb, 2022",
+      position: "Senior Front-end Developer",
+      company: "Clever Age",
       description:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae minus eius nemo. Optio cupiditate nostrum commodi repellendus nemo quod in?",
+        "Supported bug fixing and delivered solutions for the front end of Magento and WordPress projects, ensuring stability and usability.",
     },
   ] as WorkExperienceItem[],
 
