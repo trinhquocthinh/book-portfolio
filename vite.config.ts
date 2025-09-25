@@ -6,6 +6,7 @@ export default defineConfig({
   base: "/book-portfolio/",
   build: {
     sourcemap: false,
+    chunkSizeWarningLimit: 1000, // cảnh báo khi bundle quá lớn
     rollupOptions: {
       output: {
         // Ensure all assets get hashed filenames
@@ -26,4 +27,10 @@ export default defineConfig({
       },
     }),
   ],
+  optimizeDeps: {
+    include: ["lodash", "axios"],
+    exclude: ["some-big-lib"], // nếu muốn loại trừ
+  },
+  envDir: "./env",
+  envPrefix: "APP_", // chỉ lấy biến bắt đầu bằng APP_
 });
