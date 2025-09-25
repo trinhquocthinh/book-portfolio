@@ -10,18 +10,18 @@ import type {
 
 export const portfolioData = {
   personalInfo: {
-    name: "Mr Skeleton",
-    title: "Web Developer",
+    name: "Trinh Quoc Thinh",
+    title: "Senior Front-end Developer",
     description:
-      "Hi, I'm a web Developer. Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque commodi numquam dolor a deserunt incidunt esse molestias voluptatum porro ullam.",
-    profileImage: "/book-portfolio/Logo.png",
+      "Hi, I am a front-end developer with solid experience in mobile applications, web management, and platforms in e-commerce, insurance, and banking. I aim to grow into a technical architect leader within the next three years, focusing on building scalable systems and creating practical applications that improve user experience.",
+    profileImage: "/book-portfolio/logo.jpg",
   } as PersonalInfo,
 
   socialMedia: {
-    facebook: "#",
+    facebook: "https://www.facebook.com/trinh.q.thinh/",
     twitter: "#",
-    instagram: "#",
-    linkedin: "#",
+    instagram: "https://www.instagram.com/koolmaster1408/",
+    linkedin: "www.linkedin.com/in/trịnh-quốc-thịnh-54900b13b",
   } as SocialMedia,
 
   workExperience: [
